@@ -1,0 +1,14 @@
+sawmill_api_planks:
+    type: rest
+    resource: "@AppBundle/Controller/PlanksController.php"
+    name_prefix:  api_planks_
+
+sawmill_api_colors:
+    type: rest
+    resource: "@AppBundle/Controller/ColorsController.php"
+    name_prefix:  api_colors_
+
+sawmill_api_colors:
+    type: rest
+    resource: "@AppBundle/Controller/MaterialsController.php"
+    name_prefix:  api_materials_
