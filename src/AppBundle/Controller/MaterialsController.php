@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use FOS\RestBundle\Controller\FOSRestController;
 
-class BoardController extends Controller
+class MaterialsController extends FOSRestController
 {
     public function indexAction($name)
     {
