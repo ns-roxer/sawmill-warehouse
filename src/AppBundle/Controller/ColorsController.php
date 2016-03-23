@@ -6,6 +6,7 @@ use AppBundle\Entity\Color;
 use Doctrine\ORM\EntityManager;
 use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Util\Codes;
 use Symfony\Component\HttpFoundation\Request;
 
 class ColorsController extends FOSRestController
@@ -79,5 +80,32 @@ class ColorsController extends FOSRestController
         $em->flush();
 
         return $this->view([], 204);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \FOS\RestBundle\View\View
+     */
+    public function postColorAction(Request $request)
+    {
+        /** @var string | null $token */
+        $token = $request->query->get('token');
+
+        if ( !$token || $token !== $this->getParameter('auth_token')) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $color_name = $request->request->get('name');
+
+        $em = $this->getDoctrine()->getManager();
+        
+        $color_obj = new Color();
+        $color_obj->setName($color_name);
+        $em->persist($color_obj);
+        $em->flush();
+        $color_obj->getId();
+
+        return $this->view(['new_element' => '/api/colors/' . $color_obj->getId()], Codes::HTTP_CREATED);
     }
 }

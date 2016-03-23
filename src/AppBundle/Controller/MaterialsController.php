@@ -80,4 +80,31 @@ class MaterialsController extends FOSRestController
 
         return $this->view([], 204);
     }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \FOS\RestBundle\View\View
+     */
+    public function postColorAction(Request $request)
+    {
+        /** @var string | null $token */
+        $token = $request->query->get('token');
+
+        if ( !$token || $token !== $this->getParameter('auth_token')) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $material_name = $request->request->get('name');
+
+        $em = $this->getDoctrine()->getManager();
+
+        $material_obj = new Material();
+        $material_obj->setName($material_name);
+        $em->persist($material_obj);
+        $em->flush();
+        $material_obj->getId();
+
+        return $this->view(['new_element' => '/api/materials/' . $color_obj->getId()], Codes::HTTP_CREATED);
+    }
 }
