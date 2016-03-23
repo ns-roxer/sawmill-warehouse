@@ -21,7 +21,6 @@
         "friendsofsymfony/rest-bundle": "^1.7",
         "jms/serializer-bundle": "^1.1",
         "nelmio/api-doc-bundle": "^2.11",
-        "elasticsearch/elasticsearch": "^2.1",
         "friendsofsymfony/elastica-bundle": "^3.1",
         "doctrine/migrations": "^1.4",
         "doctrine/doctrine-migrations-bundle": "^1.1"

@@ -7,6 +7,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    auth_token: "%auth_token_value%"
 
 framework:
     #esi:             ~
@@ -84,7 +85,7 @@ nelmio_api_doc: ~
 
 fos_elastica:
     clients:
-        default: { host: "%elastica_host%", port: "%elastica_port%" }
+        default: { host: localhost, port: 9200 }
     indexes:
         app: ~
 
