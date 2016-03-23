@@ -46,7 +46,8 @@ class PlanksController extends FOSRestController
     /**
      * @View(statusCode=204)
      *
-     * @param $id
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param                                           $id
      *
      * @return \FOS\RestBundle\View\View
      *
