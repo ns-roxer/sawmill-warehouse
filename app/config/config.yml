@@ -84,7 +84,7 @@ nelmio_api_doc: ~
 
 fos_elastica:
     clients:
-        default: { host: 192.168.33.10, port: 9200 }
+        default: { host: "%elastica_host%", port: "%elastica_port%" }
     indexes:
         app: ~
 
