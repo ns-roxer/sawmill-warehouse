@@ -20,7 +20,6 @@ class AppKernel extends Kernel
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new FOS\RestBundle\FOSRestBundle(),
-            new FOS\ElasticaBundle\FOSElasticaBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle()
         );
 

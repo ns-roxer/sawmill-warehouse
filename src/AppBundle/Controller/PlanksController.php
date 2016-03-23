@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Plank;
 use Doctrine\ORM\EntityManager;
+use Elasticsearch\ClientBuilder;
 use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Util\Codes;
@@ -37,10 +38,23 @@ class PlanksController extends FOSRestController
     public function getPlanksAction(Request $request)
     {
         $planks = [];
-        $search_query = $request->query->get('keyword');
+        $search_query = $request->query->all();
 
-        if ($search_query) {
-
+        if (count($search_query) > 0) {
+            $client = ClientBuilder::create()->build();
+            $params['index'] = 'plank';
+            $params['type'] = 'plank';
+            foreach ($search_query as $keyword => $term) {
+                $params['body']['query']['match'][$keyword] = $term;
+            }
+            $result = $client->search($params);
+            if ($result['hits']['total'] > 0) {
+                foreach ($result['hits']['hits'] as $hit) {
+                    $plank = $hit['_source'];
+                    $plank['id'] = $hit['_id'];
+                    $planks[] = $plank;
+                }
+            }
         } else {
             // if search query is empty return all planks
             /** @var Plank $plank */
@@ -84,8 +98,20 @@ class PlanksController extends FOSRestController
             throw $this->createNotFoundException('No such plank');
         }
 
+        $plank_id = $plank->getId();
+
         $em->remove($plank);
         $em->flush();
+
+        $client = ClientBuilder::create()->build();
+
+        $params = [
+            'index' => 'plank',
+            'type' => 'plank',
+            'id' => $plank_id,
+        ];
+
+        $client->delete($params);
 
         return $this->view([], 204);
     }
@@ -106,7 +132,7 @@ class PlanksController extends FOSRestController
 
         $plank_fields = $request->request->all();
 
-        if ($plank_fields['id']) {
+        if (!empty($plank_fields['id'])) {
             unset($plank_fields['id']);
         }
 
@@ -115,9 +141,20 @@ class PlanksController extends FOSRestController
 
         $em->persist($plank_obj);
         $em->flush();
-        $plank_obj->getId();
+        $plank_id = $plank_obj->getId();
 
-        return $this->view(['new_element' => '/api/planks/' . $plank_obj->getId()], Codes::HTTP_CREATED);
+        $client = ClientBuilder::create()->build();
+
+        $params = [
+            'index' => 'plank',
+            'type' => 'plank',
+            'id' => $plank_id,
+            'body' => $plank_fields
+        ];
+
+        $client->index($params);
+
+        return $this->view(['new_element' => '/api/planks/' . $plank_id], Codes::HTTP_CREATED);
     }
 
     /**
@@ -141,7 +178,30 @@ class PlanksController extends FOSRestController
 
         $em->persist($plank_obj);
         $em->flush();
-        $plank_obj->getId();
+        $plank_id = $plank_obj->getId();
+
+        $client = ClientBuilder::create()->build();
+
+        $params = [
+            'index' => 'plank',
+            'type' => 'plank',
+            'id' => $plank_id,
+        ];
+
+        $result = $client->get($params);
+
+        $plank_from_index = $result['_source'];
+
+        unset($plank_fields['id']);
+
+        $params = [
+            'index' => 'plank',
+            'type' => 'plank',
+            'id' => $plank_id,
+            'body' => array_merge($plank_from_index, $plank_fields)
+        ];
+
+        $client->index($params);
 
         return $this->view([], Codes::HTTP_NO_CONTENT);
     }
