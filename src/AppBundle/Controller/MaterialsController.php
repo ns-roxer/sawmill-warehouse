@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace App\AppBundle\Controller;
 
 use AppBundle\Entity\Material;
 use Doctrine\ORM\EntityManager;
