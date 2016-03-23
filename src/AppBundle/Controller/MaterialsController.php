@@ -6,6 +6,7 @@ use AppBundle\Entity\Material;
 use Doctrine\ORM\EntityManager;
 use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Util\Codes;
 use Symfony\Component\HttpFoundation\Request;
 
 class MaterialsController extends FOSRestController
@@ -105,6 +106,6 @@ class MaterialsController extends FOSRestController
         $em->flush();
         $material_obj->getId();
 
-        return $this->view(['new_element' => '/api/materials/' . $color_obj->getId()], Codes::HTTP_CREATED);
+        return $this->view(['new_element' => '/api/materials/' . $material_obj->getId()], Codes::HTTP_CREATED);
     }
 }
