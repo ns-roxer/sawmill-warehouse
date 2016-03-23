@@ -1,5 +1,6 @@
 {
     "name": "nikita.strelkov/sawmill_warehouse",
+    "description": "Pet project for practicing with Symfony 2, Doctrine 2, Elasticsearch and REST API",
     "license": "proprietary",
     "type": "project",
     "autoload": {
