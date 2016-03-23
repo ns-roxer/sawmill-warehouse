@@ -10,4 +10,27 @@ namespace AppBundle\Entity;
  */
 class PlankRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param $plank_fields
+     *
+     * @return \AppBundle\Entity\Plank
+     */
+    public function preparePlankObject($plank_fields)
+    {
+        $plank = new Plank();
+        $plank
+            ->setHeight($plank_fields['height'])
+            ->setWidth($plank_fields['width'])
+            ->setLength($plank_fields['length'])
+            ->setQuantity($plank_fields['quantity']);
+
+        $em = $this->getEntityManager();
+        $color = $em->getRepository('AppBundle:Color')->findOneBy(['name' => $plank_fields['color']]);
+        $plank->setColor($color);
+            
+        $material = $em->getRepository('AppBundle:Material')->findOneBy(['name' => $plank_fields['material']]);
+        $plank->setMaterial($material);
+        
+        return $plank;
+    }
 }
