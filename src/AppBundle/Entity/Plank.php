@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Plank
@@ -41,6 +42,10 @@ class Plank
      * @var float
      *
      * @ORM\Column(name="length", type="float", nullable=false)
+     * @Assert\Range(
+     *     min = 0.1,
+     *     minMessage = "Lowest supported value is {{ limit }}.",
+     * );
      */
     private $length;
 
@@ -48,6 +53,10 @@ class Plank
      * @var float
      *
      * @ORM\Column(name="height", type="float", nullable=false)
+     * @Assert\Range(
+     *     min = 0.1,
+     *     minMessage = "Lowest supported value is {{ limit }}.",
+     * );
      */
     private $height;
 
@@ -55,6 +64,10 @@ class Plank
      * @var float
      *
      * @ORM\Column(name="width", type="float", nullable=false)
+     * @Assert\Range(
+     *     min = 0.1,
+     *     minMessage = "Lowest supported value is {{ limit }}.",
+     * );
      */
     private $width;
 
@@ -62,6 +75,10 @@ class Plank
      * @var integer
      *
      * @ORM\Column(name="quantity", type="integer", nullable=false)
+     * @Assert\Range(
+     *     min = 0,
+     *     minMessage = "Lowest supported value is {{ limit }}.",
+     * );
      */
     private $quantity;
 
