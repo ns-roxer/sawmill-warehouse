@@ -3,7 +3,11 @@
     "description": "Pet project for practicing with Symfony 2, Doctrine 2, Elasticsearch and REST API",
     "license": "proprietary",
     "type": "project",
-    "autoload": {},
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
     "require": {
         "php": ">=5.3.9",
         "symfony/symfony": "2.7.*",
