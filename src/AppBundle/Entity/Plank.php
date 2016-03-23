@@ -102,10 +102,14 @@ class Plank
 
     /**
      * @param Color $color
+     *
+     * @return $this
      */
     public function setColor($color)
     {
         $this->color = $color;
+
+        return $this;
     }
 
     /**
@@ -118,10 +122,14 @@ class Plank
 
     /**
      * @param Material $material
+     *
+     * @return $this
      */
     public function setMaterial($material)
     {
         $this->material = $material;
+
+        return $this;
     }
 
     /**
@@ -134,10 +142,14 @@ class Plank
 
     /**
      * @param float $length
+     *
+     * @return $this
      */
     public function setLength($length)
     {
         $this->length = $length;
+
+        return $this;
     }
 
     /**
@@ -150,10 +162,14 @@ class Plank
 
     /**
      * @param float $height
+     *
+     * @return $this
      */
     public function setHeight($height)
     {
         $this->height = $height;
+
+        return $this;
     }
 
     /**
@@ -166,10 +182,14 @@ class Plank
 
     /**
      * @param float $width
+     *
+     * @return $this
      */
     public function setWidth($width)
     {
         $this->width = $width;
+
+        return $this;
     }
 
     /**
@@ -182,10 +202,14 @@ class Plank
 
     /**
      * @param int $quantity
+     *
+     * @return $this
      */
     public function setQuantity($quantity)
     {
         $this->quantity = $quantity;
+
+        return $this;
     }
 }
 
