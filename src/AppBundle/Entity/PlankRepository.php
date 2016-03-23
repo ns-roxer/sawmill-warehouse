@@ -17,20 +17,40 @@ class PlankRepository extends \Doctrine\ORM\EntityRepository
      */
     public function preparePlankObject($plank_fields)
     {
-        $plank = new Plank();
-        $plank
-            ->setHeight($plank_fields['height'])
-            ->setWidth($plank_fields['width'])
-            ->setLength($plank_fields['length'])
-            ->setQuantity($plank_fields['quantity']);
+        if (!empty($plank_fields['id'])) {
+            $plank = $this->find($plank_fields['id']);
+        } else {
+            $plank = new Plank();
+        }
+
+        if (!empty($plank_fields['height'])) {
+            $plank->setHeight($plank_fields['height']);
+        }
+
+        if (!empty($plank_fields['width'])) {
+            $plank->setWidth($plank_fields['width']);
+        }
+
+        if (!empty($plank_fields['length'])) {
+            $plank->setLength($plank_fields['length']);
+        }
+
+        if (!empty($plank_fields['quantity'])) {
+            $plank->setQuantity($plank_fields['quantity']);
+        }
 
         $em = $this->getEntityManager();
-        $color = $em->getRepository('AppBundle:Color')->findOneBy(['name' => $plank_fields['color']]);
-        $plank->setColor($color);
-            
-        $material = $em->getRepository('AppBundle:Material')->findOneBy(['name' => $plank_fields['material']]);
-        $plank->setMaterial($material);
-        
+
+        if (!empty($plank_fields['color'])) {
+            $color = $em->getRepository('AppBundle:Color')->findOneBy(['name' => $plank_fields['color']]);
+            $plank->setColor($color);
+        }
+
+        if (!empty($plank_fields['material'])) {
+            $material = $em->getRepository('AppBundle:Material')->findOneBy(['name' => $plank_fields['material']]);
+            $plank->setMaterial($material);
+        }
+
         return $plank;
     }
 }

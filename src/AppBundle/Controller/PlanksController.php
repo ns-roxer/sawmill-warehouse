@@ -34,12 +34,20 @@ class PlanksController extends FOSRestController
     /**
      * @return \AppBundle\Entity\Plank[]|array
      */
-    public function getPlanksAction()
+    public function getPlanksAction(Request $request)
     {
-        /** @var Plank $plank */
-        $planks = $this->getDoctrine()
-            ->getRepository('AppBundle:Plank')
-            ->findAll();
+        $planks = [];
+        $search_query = $request->query->get('keyword');
+
+        if ($search_query) {
+
+        } else {
+            // if search query is empty return all planks
+            /** @var Plank $plank */
+            $planks = $this->getDoctrine()
+                ->getRepository('AppBundle:Plank')
+                ->findAll();
+        }
 
         return $planks;
     }
@@ -95,8 +103,12 @@ class PlanksController extends FOSRestController
         if ( !$token || $token !== $this->getParameter('auth_token')) {
             throw $this->createAccessDeniedException();
         }
-        
+
         $plank_fields = $request->request->all();
+
+        if ($plank_fields['id']) {
+            unset($plank_fields['id']);
+        }
 
         $em = $this->getDoctrine()->getManager();
         $plank_obj = $em->getRepository('AppBundle:Plank')->preparePlankObject($plank_fields);
@@ -106,5 +118,31 @@ class PlanksController extends FOSRestController
         $plank_obj->getId();
 
         return $this->view(['new_element' => '/api/planks/' . $plank_obj->getId()], Codes::HTTP_CREATED);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \FOS\RestBundle\View\View
+     */
+    public function putPlanksAction(Request $request)
+    {
+        /** @var string | null $token */
+        $token = $request->query->get('token');
+
+        if ( !$token || $token !== $this->getParameter('auth_token')) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $plank_fields = $request->request->all();
+
+        $em = $this->getDoctrine()->getManager();
+        $plank_obj = $em->getRepository('AppBundle:Plank')->preparePlankObject($plank_fields);
+
+        $em->persist($plank_obj);
+        $em->flush();
+        $plank_obj->getId();
+
+        return $this->view([], Codes::HTTP_NO_CONTENT);
     }
 }
